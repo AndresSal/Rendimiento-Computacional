@@ -22,7 +22,7 @@ public class BackEnd {
 
         public static void main(String[] args) throws IOException, InterruptedException {
 
-        if (args.length != 2) {
+        if (args.length != 1) {
             System.err.println(
                     "Usage: java EchoClient <host name> <port number>");
             System.exit(1);
