@@ -21,21 +21,22 @@ public class FrontEnd {
     public static void main (String args[])
     {
       
-      if (args.length < 3) 
+      if (args.length < 2) 
       {
         System.err.println("Usage: java EchoServer <port number>");
         System.exit(1);
       }
     
       int portNumberThread = Integer.parseInt(args[0]);
-      String hostname = args[1];
-      int portNumberBE = Integer.parseInt(args[2]);
+      //String hostname = args[1];
+      int portNumberBE = Integer.parseInt(args[1]);
       
       boolean listening = true;
       try 
       (        
         ServerSocket threadServerSocket = new ServerSocket(portNumberThread);
-        Socket clientSocketBE = new Socket(hostname, portNumberBE);  
+        //Socket clientSocketBE = new Socket(hostname, portNumberBE);
+        ServerSocket clientSocketBE = new ServerSocket(portNumberBE);  
       )
       {
           String inputlineBE, inputlineTh;
@@ -52,13 +53,25 @@ public class FrontEnd {
 //------------------------------------------------------------------------------              
 //Comunicacion con Servidor BE
               
-              ReadingThread reader =  new ReadingThread(clientSocketBE);
-              reader.start();
-              PrintWriter outBE = new PrintWriter(clientSocketBE.getOutputStream(),true);
-              BufferedReader inBE = new BufferedReader(new InputStreamReader(clientSocketBE.getInputStream()));
-              outBE.println(colainput.sacarQueue());
-              inputlineBE = inBE.readLine();
-              outTh.println(inputlineBE);
+//              ReadingThread reader =  new ReadingThread(clientSocketBE);
+//              reader.start();
+//              PrintWriter outBE = new PrintWriter(clientSocketBE.getOutputStream(),true);
+//              BufferedReader inBE = new BufferedReader(new InputStreamReader(clientSocketBE.getInputStream()));
+//              outBE.println(colainput.sacarQueue());
+//              inputlineBE = inBE.readLine();
+//              outTh.println(inputlineBE);
+                
+                Socket BEsocket=clientSocketBE.accept();
+                
+                PrintWriter outBE = new PrintWriter(BEsocket.getOutputStream(),true);
+                BufferedReader inBE = new BufferedReader(new InputStreamReader(BEsocket.getInputStream()));
+                System.out.println(inBE.readLine());
+                
+                outBE.println(colainput.sacarQueue());
+                inputlineBE = inBE.readLine();
+                outTh.println(inputlineBE);
+                
+
 //------------------------------------------------------------------------------              
           }
           clientSocketBE.close();

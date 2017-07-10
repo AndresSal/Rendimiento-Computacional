@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
+import javax.net.ssl.SSLSocket;
 
 
 /**
@@ -22,20 +23,22 @@ public class BackEnd {
 
         public static void main(String[] args) throws IOException, InterruptedException {
 
-        if (args.length != 1) {
+        if (args.length != 2) {
             System.err.println(
                     "Usage: java EchoClient <host name> <port number>");
             System.exit(1);
         }
         
         
-        
-        int portNumber = Integer.parseInt(args[0]);
+        String hostname=args[0];
+        int portNumber = Integer.parseInt(args[1]);
         
         try 
         (
-            ServerSocket serverBE = new ServerSocket(portNumber);
-            Socket clientserver = serverBE.accept();
+//            ServerSocket serverBE = new ServerSocket(portNumber);
+//            Socket clientserver = serverBE.accept();
+ 
+            Socket clientserver=new Socket(hostname, portNumber);
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientserver.getInputStream()));
             PrintWriter writer = new PrintWriter(clientserver.getOutputStream(),true);    
         ) 
